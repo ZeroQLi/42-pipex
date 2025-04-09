@@ -6,14 +6,16 @@
 #    By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/02 18:11:16 by mtangalv          #+#    #+#              #
-#    Updated: 2025/04/06 15:15:54 by zeroql           ###   ########.fr        #
+#    Updated: 2025/04/08 23:26:13 by zeroql           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
-CFILES = src/pipex.c
 
+CFILES = src/pipex.c \
+	utils/errs.c \
+	utils/utils.c
 OBJECTS = $(CFILES:.c=.o)
 
 LIBFT_PATH = libft
