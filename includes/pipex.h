@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:30:10 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/09 10:53:55 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/10 00:51:34 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,24 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 
-void	ft_error(int	errno);
-void	check_file(char *path, int in_out);
+// REMOVE
+
+#include <stdio.h>
+
+#define INVALID_FILE ".pipex_err"
+
+typedef struct s_pip
+{
+	char	*cmd;
+	char	*arg;
+	int		in_fd;
+	int		out_fd;
+	int		invalid_infile;
+} t_pip;
+
+void	ft_error(t_pip *pip, int errno);
+t_pip	*init_pipex(void);
+int		open_infile(t_pip *pip, char *file);
+int		open_outfile(char *file);
 
 #endif

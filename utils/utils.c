@@ -6,27 +6,45 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:29:07 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/09 10:54:28 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/10 01:04:06 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-void	check_file(char *path, int in_out)
+int open_infile(t_pip *pip, char *file)
 {
 	int	fd;
-	if (in_out == 0)
+	if (access(file, R_OK) == -1)
 	{
-		if (access(path, F_OK) == -1)
-			ft_error(1);
-		if (access(path, R_OK) == -1)
-			ft_error(2);
+		perror("./pipex");
+		fd = open(INVALID_FILE, O_CREAT | O_RDONLY, 0644);
+		pip->invalid_infile = 1;
 	}
 	else
-	{
-		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		if (fd == -1)
-			ft_error(2);
-		close(fd);
-	}
+		fd = open(file, O_RDONLY);
+	return (fd);
+}
+
+int	open_outfile(char *file)
+{
+	int	fd;
+
+	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	return (fd);
+}
+
+	t_pip *init_pipex(void)
+{
+	t_pip	*pip;
+
+	pip = malloc(sizeof(t_pip));
+	if (!pip)
+		exit(-1);
+	pip->cmd = "/bin/cat";
+	pip->arg = NULL;
+	pip->in_fd = -1;
+	pip->out_fd = -1;
+	pip->invalid_infile = 0;
+	return (pip);
 }
