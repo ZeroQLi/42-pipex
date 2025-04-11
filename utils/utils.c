@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:29:07 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/10 01:04:06 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/11 18:04:02 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ int	open_outfile(char *file)
 	return (fd);
 }
 
+int	init_files(t_pip *pip, char *argv[])
+{
+	pip->infile = open_infile(pip, argv[1]);
+	if (pip->infile == -1)
+		return (-1);
+	pip->outfile = open_outfile(argv[4]);
+	if (pip->outfile == -1)
+		return (-1);
+	return (0);
+}
+
 	t_pip *init_pipex(void)
 {
 	t_pip	*pip;
@@ -41,10 +52,10 @@ int	open_outfile(char *file)
 	pip = malloc(sizeof(t_pip));
 	if (!pip)
 		exit(-1);
-	pip->cmd = "/bin/cat";
-	pip->arg = NULL;
-	pip->in_fd = -1;
-	pip->out_fd = -1;
+	pip->cmd = NULL;
+	pip->args = NULL;
+	pip->infile = -1;
+	pip->outfile = -1;
 	pip->invalid_infile = 0;
 	return (pip);
 }

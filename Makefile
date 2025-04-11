@@ -6,7 +6,7 @@
 #    By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/02 18:11:16 by mtangalv          #+#    #+#              #
-#    Updated: 2025/04/08 23:26:13 by zeroql           ###   ########.fr        #
+#    Updated: 2025/04/10 22:31:16 by zeroql           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = pipex
 
 
 CFILES = src/pipex.c \
+	src/parse.c \
 	utils/errs.c \
 	utils/utils.c
 OBJECTS = $(CFILES:.c=.o)
@@ -23,7 +24,7 @@ LIBFT_LIB = $(LIBFT_PATH)/libft.a
 LIBFT_FLAGS = -L$(LIBFT_PATH) -lft
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -O3
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
