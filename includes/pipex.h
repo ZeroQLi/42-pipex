@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:30:10 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/11 17:12:15 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/11 22:55:05 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_pip
 
 void	ft_error(t_pip *pip, int errno);
 void	free_split(char **sploit);
+void	free_pip(t_pip *pip);
 t_pip	*init_pipex(void);
 int		open_infile(t_pip *pip, char *file);
 int		open_outfile(char *file);

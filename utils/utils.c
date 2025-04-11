@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:29:07 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/11 18:04:02 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 00:29:47 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int open_infile(t_pip *pip, char *file)
 	int	fd;
 	if (access(file, R_OK) == -1)
 	{
-		perror("./pipex");
+		perror("pipex");
 		fd = open(INVALID_FILE, O_CREAT | O_RDONLY, 0644);
 		pip->invalid_infile = 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 15:18:15 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/11 18:04:19 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 00:22:35 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ static int execute(t_pip *pip, char *cmd, char **envs)
 {
 	if (parse_commands(pip, cmd, envs) == -1)
 		return (-1);
-	if (execve(pip->cmd, pip->args, NULL) == -1)
+	if (execve(pip->cmd, pip->args, envs) == -1)
 	{
-		perror("pipex");
+		ft_putstr_fd("pipex: command not found: ", 2);
+		ft_putendl_fd(pip->args[0], 2);
+		free_pip(pip);
 		exit(-1);
 	}
 	return (0);
@@ -59,18 +61,21 @@ int	main(int argc, char *argv[], char **envs)
 	pip = init_pipex();
 	if (init_files(pip, argv) == -1)
 		ft_error(pip, -1);
+	
 	if (pipe(pipe_fds) == -1)
 		ft_error(pip, -1);
 	pid = fork();
 	if (pid == -1)
 		ft_error(pip, -1);
-	if (pid == 0)
+	if (!pid)
 	{
 		if (run_child(pip, argv, pipe_fds, envs) == -1)
 			ft_error(pip, -1);
 	}
 	wait(0);
 	if (run_parent(pip, argv, pipe_fds, envs) == -1)
+	{
 		ft_error(pip, -1);
+	}
 	exit (0);
 }
