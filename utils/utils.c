@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:29:07 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/12 00:29:47 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 23:24:29 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int open_infile(t_pip *pip, char *file)
 	int	fd;
 	if (access(file, R_OK) == -1)
 	{
-		perror("pipex");
+		ft_putstr_fd("pipex: permission denied: ", 2);
+		ft_putendl_fd(file, 2);
 		fd = open(INVALID_FILE, O_CREAT | O_RDONLY, 0644);
 		pip->invalid_infile = 1;
 	}

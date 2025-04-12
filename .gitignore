@@ -1,5 +1,7 @@
 # Vscode
 .vscode/*
+infile
+outfile
 
 # Prerequisites
 *.d
