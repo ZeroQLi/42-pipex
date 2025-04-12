@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 15:18:15 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/12 21:31:42 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 23:31:12 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,5 @@ int	main(int argc, char *argv[], char **envs)
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
 	waitpid(pid2, &status, 0);
-	exit(0);
+	exit(status);
 }
