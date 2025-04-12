@@ -6,13 +6,13 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 15:18:15 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/12 23:31:12 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 23:48:41 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-static int execute(t_pip *pip, char *cmd, char **envs)
+static int	execute(t_pip *pip, char *cmd, char **envs)
 {
 	if (!cmd[0])
 		ft_error(pip, 1);
@@ -28,7 +28,7 @@ static int execute(t_pip *pip, char *cmd, char **envs)
 	return (0);
 }
 
-static int run_child(t_pip *pip, char *argv[], int *pipe_fds, char **envs)
+static int	run_child(t_pip *pip, char *argv[], int *pipe_fds, char **envs)
 {
 	dup2(pip->infile, STDIN_FILENO);
 	dup2(pipe_fds[1], STDOUT_FILENO);
@@ -41,7 +41,7 @@ static int run_child(t_pip *pip, char *argv[], int *pipe_fds, char **envs)
 	return (0);
 }
 
-static int run_parent(t_pip *pip, char *argv[], int	*pipe_fds, char **envs)
+static int	run_parent(t_pip *pip, char *argv[], int	*pipe_fds, char **envs)
 {
 	dup2(pip->outfile, STDOUT_FILENO);
 	dup2(pipe_fds[0], STDIN_FILENO);
@@ -54,10 +54,34 @@ static int run_parent(t_pip *pip, char *argv[], int	*pipe_fds, char **envs)
 	return (0);
 }
 
-int	main(int argc, char *argv[], char **envs)
+static int	run_pipex(t_pip *pip, char **argv, char **envs, int	*pipe_fds)
 {
 	pid_t	pid1;
 	pid_t	pid2;
+	int		status;
+
+	pid1 = fork();
+	if (pid1 < 0)
+		ft_error(pip, 2);
+	if (pid1 == 0)
+	{
+		if (run_child(pip, argv, pipe_fds, envs) == -1)
+			ft_error(pip, -1);
+	}
+	pid2 = fork();
+	if (pid1 < 0)
+		ft_error(pip, 2);
+	if (pid2 == 0)
+	{
+		if (run_parent(pip, argv, pipe_fds, envs) == -1)
+			ft_error(pip, -1);
+	}
+	waitpid(pid1, &status, 0);
+	return (status);
+}
+
+int	main(int argc, char *argv[], char **envs)
+{
 	int		status;
 	int		pipe_fds[2];
 	t_pip	*pip;
@@ -69,26 +93,10 @@ int	main(int argc, char *argv[], char **envs)
 		ft_error(pip, -1);
 	if (pipe(pipe_fds) == -1)
 		ft_error(pip, -1);
-	pid1 = fork();
-	if (pid1 < 0)
-		ft_error(pip, 2);
-	if (pid1 == 0)
-	{
-		if (run_child(pip, argv, pipe_fds, envs) == -1)
-			ft_error(pip, -1);
-	}
-	waitpid(pid1, &status, 0);
-	pid2 = fork();
-	if (pid1 < 0)
-		ft_error(pip, 2);
-	if (pid2 == 0)
-	{
-		if (run_parent(pip, argv, pipe_fds, envs) == -1)
-			ft_error(pip, -1);
-	}
+	status = run_pipex(pip, argv, envs, pipe_fds);
 	free_pip(pip);
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
-	waitpid(pid2, &status, 0);
+	waitpid(0, &status, 0);
 	exit(status);
 }

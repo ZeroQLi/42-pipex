@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:39:24 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/12 20:45:49 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 23:51:10 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_split(char **sploit)
 	int	i;
 
 	i = 0;
-	while(sploit[i])
+	while (sploit[i])
 	{
 		free(sploit[i]);
 		sploit[i++] = NULL;
@@ -26,17 +26,17 @@ void	free_split(char **sploit)
 	sploit = NULL;
 }
 
-void free_pip(t_pip *pip)
-{	
+void	free_pip(t_pip *pip)
+{
 	if (pip->cmd)
 	{
-		free(pip->cmd);	 // Free the dynamically allocated command string
-		pip->cmd = NULL; // Set to NULL to avoid dangling pointers
+		free(pip->cmd);
+		pip->cmd = NULL;
 	}
 	if (pip->args)
 	{
-		free(pip->args);	 // Free the dynamically allocated command string
-		pip->args = NULL; // Set to NULL to avoid dangling pointers
+		free(pip->args);
+		pip->args = NULL;
 	}
 	close(pip->infile);
 	close(pip->outfile);
@@ -49,7 +49,7 @@ void free_pip(t_pip *pip)
 	pip = NULL;
 }
 
-void	ft_error(t_pip	*pip, int	errno)
+void	ft_error(t_pip *pip, int errno)
 {
 	if (errno == 0)
 	{

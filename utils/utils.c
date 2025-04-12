@@ -6,15 +6,16 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:29:07 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/12 23:24:29 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 23:51:52 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-int open_infile(t_pip *pip, char *file)
+int	open_infile(t_pip *pip, char *file)
 {
 	int	fd;
+
 	if (access(file, R_OK) == -1)
 	{
 		ft_putstr_fd("pipex: permission denied: ", 2);
@@ -46,7 +47,7 @@ int	init_files(t_pip *pip, char *argv[])
 	return (0);
 }
 
-	t_pip *init_pipex(void)
+t_pip	*init_pipex(void)
 {
 	t_pip	*pip;
 

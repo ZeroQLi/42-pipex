@@ -6,25 +6,22 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:30:10 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/11 22:55:05 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 23:49:56 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
-#define PIPEX_H
+# define PIPEX_H
 
-#include "../libft/libft.h"
-#include <stdio.h>
-#include <limits.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/wait.h>
+# include "../libft/libft.h"
+# include <stdio.h>
+# include <limits.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 
-// REMOVE
-#include <stdio.h>
-
-#define INVALID_FILE ".pipex_err"
+# define INVALID_FILE ".pipex_err"
 
 typedef struct s_pip
 {
@@ -33,7 +30,7 @@ typedef struct s_pip
 	int		infile;
 	int		outfile;
 	int		invalid_infile;
-} t_pip;
+}	t_pip;
 
 void	ft_error(t_pip *pip, int errno);
 void	free_split(char **sploit);
