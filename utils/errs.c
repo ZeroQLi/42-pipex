@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:39:24 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/12 16:04:20 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 20:45:49 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,10 @@ void	ft_error(t_pip	*pip, int	errno)
 		ft_putstr_fd("pipex: invalid arguments\n", 2);
 		ft_putstr_fd("usage: ./pipex infile cmd1 outfile cmd2\n", 2);
 	}
+	else if (errno == 1)
+		ft_putstr_fd("pipex: permission denied:\n", 2);
+	else if (errno == 2)
+		ft_putstr_fd("pipex: error creating fork:\n", 2);
 	else if (errno == -1)
 		perror("pipex");
 	if (pip != NULL)

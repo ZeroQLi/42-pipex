@@ -6,7 +6,7 @@
 /*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 15:18:15 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/12 16:47:44 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/12 21:31:42 by zeroql           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int execute(t_pip *pip, char *cmd, char **envs)
 {
+	if (!cmd[0])
+		ft_error(pip, 1);
 	if (parse_commands(pip, cmd, envs) == -1)
 		return (-1);
 	if (execve(pip->cmd, pip->args, envs) == -1)
@@ -34,7 +36,8 @@ static int run_child(t_pip *pip, char *argv[], int *pipe_fds, char **envs)
 	close(pip->infile);
 	close(pip->outfile);
 	close(pipe_fds[1]);
-	execute(pip, argv[2], envs);
+	if (execute(pip, argv[2], envs) == -1)
+		return (-1);
 	return (0);
 }
 
@@ -46,7 +49,8 @@ static int run_parent(t_pip *pip, char *argv[], int	*pipe_fds, char **envs)
 	close(pip->infile);
 	close(pip->outfile);
 	close(pipe_fds[0]);
-	execute(pip, argv[3], envs);
+	if (execute(pip, argv[3], envs) == -1)
+		return (-1);
 	return (0);
 }
 
@@ -63,12 +67,11 @@ int	main(int argc, char *argv[], char **envs)
 	pip = init_pipex();
 	if (init_files(pip, argv) == -1)
 		ft_error(pip, -1);
-	
 	if (pipe(pipe_fds) == -1)
 		ft_error(pip, -1);
 	pid1 = fork();
-	if (pid1 == -1)
-		ft_error(pip, -1);
+	if (pid1 < 0)
+		ft_error(pip, 2);
 	if (pid1 == 0)
 	{
 		if (run_child(pip, argv, pipe_fds, envs) == -1)
@@ -76,16 +79,16 @@ int	main(int argc, char *argv[], char **envs)
 	}
 	waitpid(pid1, &status, 0);
 	pid2 = fork();
-	if (pid2 == -1)
-		ft_error(pip, -1);
+	if (pid1 < 0)
+		ft_error(pip, 2);
 	if (pid2 == 0)
 	{
 		if (run_parent(pip, argv, pipe_fds, envs) == -1)
 			ft_error(pip, -1);
 	}
-	waitpid(pid2, &status, 0);
 	free_pip(pip);
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
+	waitpid(pid2, &status, 0);
 	exit(0);
 }
