@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:29:07 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/12 23:51:52 by zeroql           ###   ########.fr       */
+/*   Updated: 2025/04/14 18:51:12 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	open_infile(t_pip *pip, char *file)
 
 	if (access(file, R_OK) == -1)
 	{
-		ft_putstr_fd("pipex: permission denied: ", 2);
+		ft_putstr_fd("pipex: no such file or directory: ", 2);
 		ft_putendl_fd(file, 2);
 		fd = open(INVALID_FILE, O_CREAT | O_RDONLY, 0644);
 		pip->invalid_infile = 1;
