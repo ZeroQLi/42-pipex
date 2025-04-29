@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/07 21:39:24 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/19 14:28:50 by mtangalv         ###   ########.fr       */
+/*   Created: 2025/04/26 18:06:12 by mtangalv          #+#    #+#             */
+/*   Updated: 2025/04/27 17:05:58 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,38 +34,35 @@ void	free_pip(t_pip *pip)
 		free(pip->args);
 	if (pip->infile != -1)
 		close(pip->infile);
-	if (pip->infile != -1)
+	if (pip->outfile != -1)
 		close(pip->outfile);
-	if (pip->invalid_infile)
-		unlink(INVALID_FILE);
 	pip->args = NULL;
 	pip->cmd = NULL;
 	pip->infile = 0;
 	pip->outfile = 0;
-	pip->invalid_infile = 0;
 	free(pip);
 	pip = NULL;
 }
 
 void	ft_error(t_pip *pip, int errno)
 {
+	if (pip)
+		free_pip(pip);
 	if (errno == 0)
 	{
-		ft_putstr_fd("pipex: invalid arguments\n", 2);
-		ft_putstr_fd("usage: ./pipex infile cmd1 outfile cmd2\n", 2);
+		ft_putstr_fd("pipex: Invalid arguments\n", 2);
+		ft_putstr_fd("usage: ./pipex infile cmd1 cmd2 outfile\n", 2);
 	}
 	else if (errno == 1)
-		ft_putstr_fd("pipex: permission denied:\n", 2);
+		ft_putstr_fd("pipex: Permission denied\n", 2);
 	else if (errno == 2)
-		ft_putstr_fd("pipex: error creating fork:\n", 2);
+		ft_putstr_fd("pipex: Error creating fork\n", 2);
 	else if (errno == 3)
 	{
-		ft_putstr_fd("pipex: command not found: ", 2);
-		ft_putendl_fd(pip->cmd, 2);
+		ft_putstr_fd("pipex: Command not found\n", 2);
+		exit(127);
 	}
 	else if (errno == -1)
 		perror("pipex");
-	if (pip != NULL)
-		free_pip(pip);
-	exit(-1);
+	exit(1);
 }
