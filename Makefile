@@ -3,15 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zeroql <zeroql@student.42.fr>              +#+  +:+       +#+         #
+#    By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/02 18:11:16 by mtangalv          #+#    #+#              #
-#    Updated: 2025/04/10 22:31:16 by zeroql           ###   ########.fr        #
+#    Updated: 2025/04/27 14:43:56 by mtangalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
-
 
 CFILES = src/pipex.c \
 	src/parse.c \
@@ -45,6 +44,6 @@ fclean: clean
 	make fclean -C libft/
 	rm -f $(NAME)
 
-re : fclean all
+re: fclean all
 
 .PHONY:	all clean fclean re

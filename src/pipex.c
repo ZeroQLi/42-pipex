@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/06 15:18:15 by zeroql            #+#    #+#             */
-/*   Updated: 2025/04/19 14:33:23 by mtangalv         ###   ########.fr       */
+/*   Created: 2025/04/26 18:05:48 by mtangalv          #+#    #+#             */
+/*   Updated: 2025/04/29 13:34:00 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,36 +18,39 @@ static int	execute(t_pip *pip, char *cmd, char **envs)
 		ft_error(pip, 1);
 	if (parse_commands(pip, cmd, envs) == -1)
 		return (-1);
-	if (execve(pip->cmd, pip->args, envs) == -1)
-		ft_error(pip, 3);
+	dprintf(2, "%s", (pip->args)[0]);
+	execve(pip->cmd, pip->args, envs);
+	ft_error(pip, 3);
 	return (0);
 }
 
 static int	run_child(t_pip *pip, char *argv[], int *pipe_fds, char **envs)
 {
-	dup2(pip->infile, STDIN_FILENO);
-	dup2(pipe_fds[1], STDOUT_FILENO);
 	close(pipe_fds[0]);
+	dup2(pipe_fds[1], STDOUT_FILENO);
+	close(pipe_fds[1]);
+	pip->infile = open_infile(argv[1]);
+	if (pip->infile == -1)
+		ft_error(pip, 8218);
+	dup2(pip->infile, STDIN_FILENO);
 	close(pip->infile);
 	pip->infile = -1;
-	close(pip->outfile);
-	pip->outfile = -1;
-	close(pipe_fds[1]);
 	if (execute(pip, argv[2], envs) == -1)
 		return (-1);
 	return (0);
 }
 
-static int	run_parent(t_pip *pip, char *argv[], int	*pipe_fds, char **envs)
+static int	run_parent(t_pip *pip, char *argv[], int *pipe_fds, char **envs)
 {
-	dup2(pip->outfile, STDOUT_FILENO);
 	dup2(pipe_fds[0], STDIN_FILENO);
 	close(pipe_fds[1]);
-	close(pip->infile);
-	pip->infile = -1;
+	close(pipe_fds[0]);
+	pip->outfile = open_outfile(argv[4]);
+	if (pip->outfile == -1)
+		ft_error(pip, 8218);
+	dup2(pip->outfile, STDOUT_FILENO);
 	close(pip->outfile);
 	pip->outfile = -1;
-	close(pipe_fds[0]);
 	if (execute(pip, argv[3], envs) == -1)
 		return (-1);
 	return (0);
@@ -75,7 +78,10 @@ static int	run_pipex(t_pip *pip, char **argv, char **envs, int	*pipe_fds)
 		if (run_parent(pip, argv, pipe_fds, envs) == -1)
 			ft_error(pip, -1);
 	}
-	waitpid(pid1, &status, 0);
+	close(pipe_fds[0]);
+	close(pipe_fds[1]);
+	waitpid(pid2, &status, 0);
+	wait(NULL);
 	return (status);
 }
 
@@ -88,14 +94,13 @@ int	main(int argc, char *argv[], char **envs)
 	if (argc != 5)
 		ft_error(NULL, 0);
 	pip = init_pipex();
-	if (init_files(pip, argv) == -1)
-		ft_error(pip, -1);
 	if (pipe(pipe_fds) == -1)
 		ft_error(pip, -1);
 	status = run_pipex(pip, argv, envs, pipe_fds);
 	free_pip(pip);
-	close(pipe_fds[0]);
-	close(pipe_fds[1]);
-	waitpid(0, &status, 0);
-	exit(status);
+	if (WIFEXITED(status))
+		exit(WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		exit(WTERMSIG(status) + 128);
+	exit(0);
 }
