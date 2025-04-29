@@ -5,20 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 18:05:57 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/28 17:59:35 by mtangalv         ###   ########.fr       */
+/*   Created: 2025/04/08 22:29:07 by zeroql            #+#    #+#             */
+/*   Updated: 2025/04/14 18:51:12 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-int	open_infile(char *file)
+int	open_infile(t_pip *pip, char *file)
 {
 	int	fd;
 
-	fd = open(file, O_RDONLY, 0644);
-	if (fd == -1)
-		perror("pipex");
+	if (access(file, R_OK) == -1)
+	{
+		ft_putstr_fd("pipex: no such file or directory: ", 2);
+		ft_putendl_fd(file, 2);
+		fd = open(INVALID_FILE, O_CREAT | O_RDONLY, 0644);
+		pip->invalid_infile = 1;
+	}
+	else
+		fd = open(file, O_RDONLY);
 	return (fd);
 }
 
@@ -27,9 +33,18 @@ int	open_outfile(char *file)
 	int	fd;
 
 	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0644);
-	if (fd == -1)
-		perror("pipex");
 	return (fd);
+}
+
+int	init_files(t_pip *pip, char *argv[])
+{
+	pip->infile = open_infile(pip, argv[1]);
+	if (pip->infile == -1)
+		return (-1);
+	pip->outfile = open_outfile(argv[4]);
+	if (pip->outfile == -1)
+		return (-1);
+	return (0);
 }
 
 t_pip	*init_pipex(void)
@@ -43,5 +58,6 @@ t_pip	*init_pipex(void)
 	pip->args = NULL;
 	pip->infile = -1;
 	pip->outfile = -1;
+	pip->invalid_infile = 0;
 	return (pip);
 }
