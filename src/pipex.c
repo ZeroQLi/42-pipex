@@ -6,7 +6,7 @@
 /*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 18:05:48 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/29 13:42:38 by mtangalv         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:23:20 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,14 @@ static int	execute(t_pip *pip, char *cmd, char **envs)
 static int	run_child(t_pip *pip, char *argv[], int *pipe_fds, char **envs)
 {
 	close(pipe_fds[0]);
-	dup2(pipe_fds[1], STDOUT_FILENO);
+	if (dup2(pipe_fds[1], STDOUT_FILENO) == -1)
+		ft_error(pip, -1);
 	close(pipe_fds[1]);
 	pip->infile = open_infile(argv[1]);
 	if (pip->infile == -1)
 		ft_error(pip, 8218);
-	dup2(pip->infile, STDIN_FILENO);
+	if (dup2(pip->infile, STDIN_FILENO) == -1)
+		ft_error(pip, -1);
 	close(pip->infile);
 	pip->infile = -1;
 	if (execute(pip, argv[2], envs) == -1)
@@ -41,13 +43,15 @@ static int	run_child(t_pip *pip, char *argv[], int *pipe_fds, char **envs)
 
 static int	run_parent(t_pip *pip, char *argv[], int *pipe_fds, char **envs)
 {
-	dup2(pipe_fds[0], STDIN_FILENO);
+	if (dup2(pipe_fds[0], STDIN_FILENO) == -1)
+		ft_error(pip, -1);
 	close(pipe_fds[1]);
 	close(pipe_fds[0]);
 	pip->outfile = open_outfile(argv[4]);
 	if (pip->outfile == -1)
 		ft_error(pip, 8218);
-	dup2(pip->outfile, STDOUT_FILENO);
+	if (dup2(pip->outfile, STDOUT_FILENO) == -1)
+		ft_error(pip, -1);
 	close(pip->outfile);
 	pip->outfile = -1;
 	if (execute(pip, argv[3], envs) == -1)
