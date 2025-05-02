@@ -6,7 +6,7 @@
 /*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 18:05:30 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/29 13:33:01 by mtangalv         ###   ########.fr       */
+/*   Updated: 2025/05/01 20:53:32 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,19 @@ static char	*get_path(char *command, char **envs)
 	return (free_split(env), command);
 }
 
+static char	*get_path_free(char *cmd, char **envs)
+{
+	char	*duped;
+
+	duped = get_path(cmd, envs);
+	if (duped == NULL)
+	{
+		free(cmd);
+		cmd = NULL;
+	}
+	return (duped);
+}
+
 int	parse_commands(t_pip *pip, char *command, char **envs)
 {
 	char	**cmds;
@@ -73,10 +86,10 @@ int	parse_commands(t_pip *pip, char *command, char **envs)
 	if (ft_strchr(cmds[0], '/'))
 	{
 		pip->args = cmds;
-		pip->cmd = command;
+		pip->cmd = ft_strdup(cmds[0]);
 		return (0);
 	}
-	path = get_path(cmds[0], envs);
+	path = get_path_free(ft_strdup(cmds[0]), envs);
 	if (path == NULL)
 	{
 		free_split(cmds);

@@ -6,7 +6,7 @@
 #    By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/02 18:11:16 by mtangalv          #+#    #+#              #
-#    Updated: 2025/04/27 14:43:56 by mtangalv         ###   ########.fr        #
+#    Updated: 2025/04/30 18:44:42 by mtangalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ LIBFT_LIB = $(LIBFT_PATH)/libft.a
 LIBFT_FLAGS = -L$(LIBFT_PATH) -lft
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -O3
+CFLAGS = -Wall -Wextra -Werror -g3
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<

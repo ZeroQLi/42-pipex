@@ -6,7 +6,7 @@
 /*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 18:06:12 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/27 17:05:58 by mtangalv         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:29:31 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ void	free_split(char **sploit)
 
 void	free_pip(t_pip *pip)
 {
+	if (pip->args)
+		free_split(pip->args);
+	pip->args = NULL;
 	if (pip->cmd)
 		free(pip->cmd);
-	if (pip->args)
-		free(pip->args);
+	pip->cmd = NULL;
 	if (pip->infile != -1)
 		close(pip->infile);
+	pip->infile = 0;
 	if (pip->outfile != -1)
 		close(pip->outfile);
-	pip->args = NULL;
-	pip->cmd = NULL;
-	pip->infile = 0;
 	pip->outfile = 0;
 	free(pip);
 	pip = NULL;

@@ -6,7 +6,7 @@
 /*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 18:05:48 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/30 12:23:20 by mtangalv         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:47:25 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	execute(t_pip *pip, char *cmd, char **envs)
 		return (-1);
 	execve(pip->cmd, pip->args, envs);
 	ft_error(pip, 3);
-	return (0);
+	exit(1);
 }
 
 static int	run_child(t_pip *pip, char *argv[], int *pipe_fds, char **envs)

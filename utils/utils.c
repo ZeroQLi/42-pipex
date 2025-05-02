@@ -6,7 +6,7 @@
 /*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 18:05:57 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/30 12:03:49 by mtangalv         ###   ########.fr       */
+/*   Updated: 2025/04/30 16:55:23 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	open_infile(char *file)
 {
 	int	fd;
 
-	fd = access(file, O_RDONLY);
-	if (fd == -1)
+	fd = -1;
+	if (access(file, R_OK) == -1)
 		perror("pipex");
 	else
 		fd = open(file, O_RDONLY, 0644);
@@ -28,7 +28,7 @@ int	open_outfile(char *file)
 {
 	int	fd;
 
-	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	fd = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
 		perror("pipex");
 	return (fd);
