@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtangalv <mtangalv@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 18:05:48 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/30 18:47:25 by mtangalv         ###   ########.fr       */
+/*   Updated: 2025/10/04 13:42:45 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,10 @@ int	main(int argc, char *argv[], char **envs)
 	status = run_pipex(pip, argv, envs, pipe_fds);
 	free_pip(pip);
 	if (WIFEXITED(status))
+	{
+		printf("Exit code: %d\n", WEXITSTATUS(status));
 		exit(WEXITSTATUS(status));
+	}
 	if (WIFSIGNALED(status))
 		exit(WTERMSIG(status) + 128);
 	exit(0);

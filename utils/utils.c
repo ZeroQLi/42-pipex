@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtangalv <mtangalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtangalv <mtangalv@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 18:05:57 by mtangalv          #+#    #+#             */
-/*   Updated: 2025/04/30 16:55:23 by mtangalv         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:23:32 by mtangalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	open_infile(char *file)
 	if (access(file, R_OK) == -1)
 		perror("pipex");
 	else
-		fd = open(file, O_RDONLY, 0644);
+		fd = open(file, O_RDONLY, 420);
 	return (fd);
 }
 
